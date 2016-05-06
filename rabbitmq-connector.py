@@ -21,7 +21,9 @@ async def callback(channel, body, envelope, properties):
     async with aiopg.create_pool(dsn) as pool:
         async with pool.acquire() as conn:
             async with conn.cursor() as cur:
-                await cur.execute("INSERT INTO traces (trace_uuid, transaction_uuid, origin_uuid, start_time, end_time, meta, trace_name) VALUES (%s, %s, %s, %s, %s, %s, %s)", (trace_uuid, transaction_uuid, origin_uuid, start_time, end_time, meta, trace_name))
+                await cur.execute(
+                    "INSERT INTO traces (trace_uuid, transaction_uuid, origin_uuid, start_time, end_time, meta, trace_name) VALUES (%s, %s, %s, %s, %s, %s, %s)", 
+                    (trace_uuid, transaction_uuid, origin_uuid, start_time, end_time, meta, trace_name))
 
     print(decoded_blob)
 
