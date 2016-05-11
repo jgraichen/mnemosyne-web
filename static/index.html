@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+
+      google.charts.load('current', {'packages':['timeline']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var container = document.getElementById('timeline');
+        var chart = new google.visualization.Timeline(container);
+        var dataTable = new google.visualization.DataTable();
+        dataTable.addColumn({ type: 'string', id: 'Service' });
+        dataTable.addColumn({ type: 'date', id: 'Start' });
+        dataTable.addColumn({ type: 'date', id: 'End' });
+
+        var options = {
+          hAxis: {
+            format: 'HH:mm:ss',
+          }
+        }
+
+
+        $.getJSON( "api/getTrace", function( data ) {
+
+          dataTable.addRows(
+            $.map(data.spans, function(span){
+              return [[ span.span_name, new Date(span.start_time), new Date(span.end_time) ]]
+            })
+          );
+
+          chart.draw(dataTable, options);
+
+        });
+
+
+
+      }
+
+    </script>
+  </head>
+
+  <body>
+    <div id="timeline"></div>
+  </body>
+</html>
