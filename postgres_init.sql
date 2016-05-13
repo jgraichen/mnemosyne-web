@@ -1,20 +1,28 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+CREATE TABLE applications(
+uuid uuid PRIMARY KEY DEFAULT uuid_generate_v4(), 
+name text,
+original_name text
+);
+
 CREATE TABLE traces(
-trace_uuid uuid PRIMARY KEY,
+uuid uuid PRIMARY KEY,
 transaction_uuid uuid,
 origin_uuid uuid,
-trace_name text,
+application_uuid uuid,
+name text,
 start_time timestamp(6),
 end_time timestamp(6),
 meta jsonb
-)
+);
 
 CREATE TABLE spans(
 trace_uuid uuid,
-span_name text,
+uuid uuid,
+name text,
 start_time timestamp(6),
 end_time timestamp(6),
 meta jsonb,
-FOREIGN KEY (trace_uuid) REFERENCES traces(trace_uuid)
-)
+FOREIGN KEY (trace_uuid) REFERENCES traces(uuid)
+);
