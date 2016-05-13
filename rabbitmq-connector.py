@@ -23,11 +23,11 @@ async def callback(channel, body, envelope, properties):
   app_is_name = False
 
   dsn = 'dbname=mnemosynetest1'
+  async with aiopg.create_pool(dsn) as pool:
+    async with pool.acquire() as conn:
 
-  try:
-    application_uuid = str(uuid.UUID(application, version=4))
-    async with aiopg.create_pool(dsn) as pool:
-      async with pool.acquire() as conn:
+      try:
+        application_uuid = str(uuid.UUID(application, version=4))
         async with conn.cursor() as cur:
           await cur.execute(
               "SELECT uuid FROM applications WHERE uuid=%s", 
@@ -37,9 +37,7 @@ async def callback(channel, body, envelope, properties):
             ret.append(row)
           if len(ret) == 0:
             new_app = True
-  except ValueError:
-    async with aiopg.create_pool(dsn) as pool:
-      async with pool.acquire() as conn:
+      except ValueError:
         async with conn.cursor() as cur:
           await cur.execute(
               "SELECT uuid FROM applications WHERE original_name=%s", 
@@ -54,9 +52,7 @@ async def callback(channel, body, envelope, properties):
             new_app = True
             app_is_name = True
 
-  if new_app:
-    async with aiopg.create_pool(dsn) as pool:
-      async with pool.acquire() as conn:
+      if new_app:
         async with conn.cursor() as cur:
           if app_is_name:
             await cur.execute(
@@ -67,11 +63,6 @@ async def callback(channel, body, envelope, properties):
                 "INSERT INTO applications (uuid) VALUES (%s)", 
                 (application_uuid,))
 
-
-
-
-  async with aiopg.create_pool(dsn) as pool:
-    async with pool.acquire() as conn:
       async with conn.cursor() as cur:
         await cur.execute(
             "INSERT INTO traces (uuid, transaction_uuid, origin_uuid, start_time, end_time, meta, name, application_uuid) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", 
@@ -81,8 +72,6 @@ async def callback(channel, body, envelope, properties):
           await cur.execute(
               "INSERT INTO spans (uuid, trace_uuid, name, start_time, end_time, meta) VALUES (%s, %s, %s, %s, %s, %s)", 
               (span["uuid"], trace_uuid, span["name"], datetime.fromtimestamp(span["start"] / 1e9), datetime.fromtimestamp(span["stop"] / 1e9), json.dumps(span["meta"])))
-
-  print(decoded_blob)
 
 async def connect():
   try:
