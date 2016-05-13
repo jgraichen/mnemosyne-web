@@ -14,7 +14,8 @@ application_uuid uuid,
 name text,
 start_time timestamp(6),
 end_time timestamp(6),
-meta jsonb
+meta jsonb,
+FOREIGN KEY (application_uuid) REFERENCES applications(uuid)
 );
 
 CREATE TABLE spans(
