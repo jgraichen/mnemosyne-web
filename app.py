@@ -1,55 +1,59 @@
-from flask import Flask, jsonify
+import aiohttp
+import aiohttp.web
+
+import asyncio
+import aiopg
 from datetime import datetime
+import json
 
-app = Flask(__name__, static_url_path='')
+async def index(request):
+  with open ("static/index.html", "r") as indexHtml:
+    data = indexHtml.read()
+  return aiohttp.web.Response(text=data, content_type='text/html')
 
-@app.route("/")
-def hello():
-    return app.send_static_file('index.html')
+async def getTrace(request):
+  # Who needs real working code?
+  #traceUuid = request.match_info.get('traceUuid')
+  #trace = {'trace_uuid': traceUuid, 'spans': []}
+  #dsn = 'dbname=mnemosynetest1'
+  #async with aiopg.create_pool(dsn) as pool:
+  #  async with pool.acquire() as conn:
 
-@app.route("/api/getTrace")
-def getTrace():
-    trace = {
-        "trace_uuid": "asdasda",
-        "transaction_uuid": "asdasdas",
-        "origin_uuid": "adasdasd",
-        "trace_name": "My Trace",
-        "start_time": datetime(2016, 5, 11, 14, 14, 31, 100000).timestamp(),
-        "end_time": datetime(2016, 5, 11, 14, 14, 33, 100000).timestamp(),
-        "meta": {"some": "meta stuff"},
-        "spans": [
-            {
-                "trace_uuid": "asdasda",
-                "span_name": "service1",
-                "start_time": datetime(2016, 5, 11, 14, 14, 31, 100000).timestamp()*1000,
-                "end_time": datetime(2016, 5, 11, 14, 14, 31, 350000).timestamp()*1000,
-                "meta": {"some": "meta stuff"}
-            },
-            {
-                "trace_uuid": "asdasda",
-                "span_name": "service2",
-                "start_time": datetime(2016, 5, 11, 14, 14, 31, 200000).timestamp()*1000,
-                "end_time": datetime(2016, 5, 11, 14, 14, 32, 350000).timestamp()*1000,
-                "meta": {"some": "meta stuff"}
-            },
-            {
-                "trace_uuid": "asdasda",
-                "span_name": "service1",
-                "start_time": datetime(2016, 5, 11, 14, 14, 31, 450000).timestamp()*1000,
-                "end_time": datetime(2016, 5, 11, 14, 14, 32, 950000).timestamp()*1000,
-                "meta": {"some": "meta stuff"}
-            },
-            {
-                "trace_uuid": "asdasda",
-                "span_name": "service3",
-                "start_time": datetime(2016, 5, 11, 14, 14, 32, 100000).timestamp()*1000,
-                "end_time": datetime(2016, 5, 11, 14, 14, 33, 100000).timestamp()*1000,
-                "meta": {"some": "meta stuff"}
-            },
-        ]
-    }
-    return jsonify(**trace)
+  #    async with conn.cursor() as cur:
+  #      await cur.execute(
+  #        "SELECT transaction_uuid, origin_uuid, application_uuid, name, start_time, end_time, meta FROM traces WHERE uuid=%s",
+  #        (traceUuid,))
+  #      async for row in cur:
+  #        trace['transaction_uuid'] = str(row[0])
+  #        trace['origin_uuid'] = str(row[1])
+  #        trace['application_uuid'] = str(row[2])
+  #        trace['trace_name'] = row[3]
+  #        trace['start_time'] = row[4].timestamp() * 1000 * 1000
+  #        trace['end_time'] = row[5].timestamp() * 1000 * 1000
+  #        trace['meta'] = row[6]
 
+  #    async with conn.cursor() as cur:
+  #      await cur.execute(
+  #        "SELECT uuid, name, start_time, end_time, meta FROM spans WHERE trace_uuid=%s",
+  #        (traceUuid,))
+  #      async for row in cur:
+  #        span = {}
+  #        span['span_uuid'] = str(row[0])
+  #        span['span_name'] = str(row[1])
+  #        span['start_time'] = row[2].timestamp() * 1000 * 1000
+  #        span['end_time'] = row[3].timestamp() * 1000 * 1000
+  #        span['meta'] = row[4]
+  #        trace['spans'].append(span)
+
+  # Just stub it, srsly ;).
+  with open ("95fabf78-96cc-4e8d-87c5-715fd5400936.json", "r") as traceJson:
+    trace = json.loads(traceJson.read())
+
+  return aiohttp.web.json_response(trace)
+
+app = aiohttp.web.Application()
+app.router.add_route('GET', '/', index)
+app.router.add_route('GET', '/trace/{traceUuid}', getTrace)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+  aiohttp.web.run_app(app)

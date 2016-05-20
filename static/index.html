@@ -21,7 +21,7 @@
         }
 
 
-        $.getJSON( "api/getTrace", function( data ) {
+        $.getJSON( "/trace/95fabf78-96cc-4e8d-87c5-715fd5400936", function( data ) {
 
           dataTable.addRows(
             $.map(data.spans, function(span){
