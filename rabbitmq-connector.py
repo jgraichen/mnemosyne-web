@@ -46,7 +46,7 @@ async def callback(channel, body, envelope, properties):
           async for row in cur:
             ret.append(row)
           if len(ret) == 1:
-            application_uuid = row[0]
+            application_uuid = ret[0][0]
           else:
             application_uuid = str(uuid.uuid4())
             new_app = True
