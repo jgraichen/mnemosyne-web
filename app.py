@@ -82,15 +82,45 @@ async def getTransaction(request):
   # Valid request:
   # 953bdffe-94bc-419c-9749-8c4d88d0e38f
   fname = "stub/transaction/" + request.match_info.get('transactionUuid') + ".json"
-  with open (fname, "r") as traceJson:
-    transaction = json.loads(traceJson.read())
+  with open (fname, "r") as transactionJson:
+    transaction = json.loads(transactionJson.read())
 
   return aiohttp.web.json_response(transaction)
+
+async def getApplication(request):
+  # Who needs real working code?
+  #applicationUuid = request.match_info.get('applicationUuid')
+  #application = {'application_uuid': applicationUuid}
+  #dsn = 'dbname=mnemosynetest1'
+  #async with aiopg.create_pool(dsn) as pool:
+  #  async with pool.acquire() as conn:
+
+  #    async with conn.cursor() as cur:
+  #      await cur.execute(
+  #        "SELECT name, original_name FROM applications WHERE uuid=%s",
+  #        (applicationUuid,))
+  #      async for row in cur:
+  #        application['application_name'] = str(row[0])
+  #        application['application_original_name'] = str(row[1])
+
+  # Just stub it, srsly ;).
+  # Valid requests:
+  # 4ca160de-5163-4db3-a588-a13afb4c05b8
+  # 555a9785-93ca-4576-b3c0-ab1e90bd4cf6
+  # ed6acf9d-07b9-4d2c-ba13-cedc33820a2f
+  # b5891353-27ea-4baf-8a1c-8e00365df14f
+  # eab7d0b7-d138-4e09-b0dd-0bc8eff4ba69
+  fname = "stub/application/" + request.match_info.get('applicationUuid') + ".json"
+  with open (fname, "r") as applicationJson:
+    application = json.loads(applicationJson.read())
+
+  return aiohttp.web.json_response(application)
 
 app = aiohttp.web.Application()
 app.router.add_route('GET', '/', index)
 app.router.add_route('GET', '/trace/{traceUuid}', getTrace)
 app.router.add_route('GET', '/transaction/{transactionUuid}', getTransaction)
+app.router.add_route('GET', '/application/{applicationUuid}', getApplication)
 
 if __name__ == "__main__":
   aiohttp.web.run_app(app)
