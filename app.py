@@ -46,7 +46,7 @@ async def getTrace(request):
   #        trace['spans'].append(span)
 
   # Just stub it, srsly ;).
-  with open ("95fabf78-96cc-4e8d-87c5-715fd5400936.json", "r") as traceJson:
+  with open ("stub/95fabf78-96cc-4e8d-87c5-715fd5400936.json", "r") as traceJson:
     trace = json.loads(traceJson.read())
 
   return aiohttp.web.json_response(trace)
