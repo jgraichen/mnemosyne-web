@@ -35,4 +35,4 @@ bower.json
 .powenv
 
 # Ignore pycache
-/__pycache__
+*/__pycache__
