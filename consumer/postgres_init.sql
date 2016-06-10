@@ -1,5 +1,7 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+DROP INDEX IF EXISTS traces_start_time_index;
+
 DROP TABLE IF EXISTS spans;
 DROP TABLE IF EXISTS traces;
 DROP TABLE IF EXISTS applications;
@@ -31,3 +33,5 @@ end_time timestamp(6),
 meta jsonb,
 FOREIGN KEY (trace_uuid) REFERENCES traces(uuid)
 );
+
+CREATE INDEX traces_start_time_index ON traces(start_time);
