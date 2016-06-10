@@ -4,6 +4,7 @@ import aiopg
 from datetime import datetime
 import json
 
+
 async def getTrace(request):
   # Who needs real working code?
   #traceUuid = request.match_info.get('traceUuid')
