@@ -21,16 +21,13 @@ module.exports = {
       {
         test: /\.jsx?$/,
         include: path.resolve('./src'),
-        loader: 'babel',
+        loaders: ['react-hot', 'babel'],
       }
     ]
   },
   babel: {
-    presets: ['react']
+    presets: ['react'],
+    plugins: ['transform-es2015-modules-commonjs']
   },
-  devtool: 'source-map-inline',
-  devServer: {
-    contentBase: path.resolve('./static'),
-    inline: true,
-  }
+  devtool: 'source-map-inline'
 }
