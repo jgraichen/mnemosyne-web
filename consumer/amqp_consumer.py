@@ -30,7 +30,7 @@ async def callback(channel, body, envelope, properties):
         application_uuid = str(uuid.UUID(application, version=4))
         async with conn.cursor() as cur:
           await cur.execute(
-              "SELECT uuid FROM applications WHERE uuid=%s", 
+              "SELECT uuid FROM applications WHERE uuid=%s",
               (application_uuid))
           ret = []
           async for row in cur:
@@ -40,7 +40,7 @@ async def callback(channel, body, envelope, properties):
       except ValueError:
         async with conn.cursor() as cur:
           await cur.execute(
-              "SELECT uuid FROM applications WHERE original_name=%s", 
+              "SELECT uuid FROM applications WHERE original_name=%s",
               (application,))
           ret = []
           async for row in cur:
@@ -56,26 +56,26 @@ async def callback(channel, body, envelope, properties):
         async with conn.cursor() as cur:
           if app_is_name:
             await cur.execute(
-                "INSERT INTO applications (uuid, name, original_name) VALUES (%s, %s, %s)", 
+                "INSERT INTO applications (uuid, name, original_name) VALUES (%s, %s, %s)",
                 (application_uuid, application, application))
           else:
             await cur.execute(
-                "INSERT INTO applications (uuid) VALUES (%s)", 
+                "INSERT INTO applications (uuid) VALUES (%s)",
                 (application_uuid,))
 
       async with conn.cursor() as cur:
         await cur.execute(
-            "INSERT INTO traces (uuid, transaction_uuid, origin_uuid, start_time, end_time, meta, name, application_uuid) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", 
+            "INSERT INTO traces (uuid, transaction_uuid, origin_uuid, start_time, end_time, meta, name, application_uuid) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
             (trace_uuid, transaction_uuid, origin_uuid, start_time, end_time, meta, trace_name, application_uuid))
 
         for span in spans:
           await cur.execute(
-              "INSERT INTO spans (uuid, trace_uuid, name, start_time, end_time, meta) VALUES (%s, %s, %s, %s, %s, %s)", 
+              "INSERT INTO spans (uuid, trace_uuid, name, start_time, end_time, meta) VALUES (%s, %s, %s, %s, %s, %s)",
               (span["uuid"], trace_uuid, span["name"], datetime.fromtimestamp(span["start"] / 1e9), datetime.fromtimestamp(span["stop"] / 1e9), json.dumps(span["meta"])))
 
 async def connect():
   try:
-    transport, protocol = await aioamqp.connect(host="chimera", port=5672, login  ="admin", password="admin")
+    transport, protocol = await aioamqp.connect(host="chimera", port=5672, login="admin", password="admin")
     channel = await protocol.channel()
   except aioamqp.AmqpClosedConnection:
     print("closed connections")
@@ -90,7 +90,7 @@ async def connect():
   print(' [*] Waiting for traces. To exit press CTRL+C')
 
   await channel.basic_consume(callback, queue_name="mnemosyne-server", no_ack=True)
-    
+
   # close using the `AMQP` protocol
   #yield from protocol.close()
   # ensure the socket is closed.
