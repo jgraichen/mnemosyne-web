@@ -1,7 +1,11 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+DROP TABLE IF EXISTS spans;
+DROP TABLE IF EXISTS traces;
+DROP TABLE IF EXISTS applications;
+
 CREATE TABLE applications(
-uuid uuid PRIMARY KEY DEFAULT uuid_generate_v4(), 
+uuid uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
 name text,
 original_name text
 );
