@@ -71,5 +71,13 @@ module.exports = {
   postcss: function() {
     return [autoprefixer]
   },
-  devtool: 'source-map-inline'
+  devtool: 'source-map-inline',
+  devServer: {
+    port: 8081,
+    inline: true,
+    contentBase: path.resolve('./public'),
+    proxy: {
+      "*": "http://localhost:8080"
+    },
+  }
 }

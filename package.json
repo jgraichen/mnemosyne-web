@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "webpack-dev-server --watch --inline --hot --content-base public",
+    "start": "webpack-dev-server --watch",
     "dist": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
