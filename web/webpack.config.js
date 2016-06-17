@@ -1,5 +1,9 @@
 const path = require('path')
 const webpack = require('webpack')
+const autoprefixer = require('autoprefixer')
+const ExtractText = require('extract-text-webpack-plugin')
+
+const extractStyles = new ExtractText('[name].css')
 
 module.exports = {
   entry: [
@@ -7,7 +11,7 @@ module.exports = {
   ],
   output: {
     path: path.resolve('./dist'),
-    publicPath: '/dist',
+    publicPath: '/dist/',
     filename: '[name].js',
   },
   resolve: {
@@ -22,6 +26,44 @@ module.exports = {
         test: /\.jsx?$/,
         include: path.resolve('./src'),
         loaders: ['react-hot', 'babel'],
+      }, {
+        test: /\.sass$/,
+        include: path.resolve('./src'),
+        loader: extractStyles.extract([
+          'css?modules&camelCase&sourceMap',
+          'postcss?sourceMap',
+          'sass?sourceMap'
+        ]),
+      }, {
+        test: /\.svg$/,
+        loader: 'file',
+        query: {
+          mimetype: 'image/svg+xml'
+        }
+      }, {
+        test: /\.woff$/,
+        loader: 'file',
+        query: {
+          mimetype: 'application/font-woff'
+        }
+      }, {
+        test: /\.woff2$/,
+        loader: 'file',
+        query: {
+          mimetype: 'application/font-woff2'
+        }
+      }, {
+        test: /\.[ot]tf$/,
+        loader: 'file',
+        query: {
+          mimetype: 'application/octet-stream'
+        }
+      }, {
+        test: /\.eot$/,
+        loader: 'file',
+        query: {
+          mimetype: 'application/vnd.ms-fontobject'
+        }
       }
     ]
   },
@@ -29,5 +71,11 @@ module.exports = {
     presets: ['react'],
     plugins: ['transform-es2015-modules-commonjs']
   },
-  devtool: 'source-map-inline'
+  postcss: function() {
+    return [autoprefixer]
+  },
+  devtool: 'source-map-inline',
+  plugins: [
+    extractStyles
+  ]
 }

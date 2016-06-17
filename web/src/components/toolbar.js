@@ -1,4 +1,5 @@
 import React from 'react'
+import styles from './toolbar.sass'
 
 export default class Toolbar extends React.Component {
     constructor(...args) {
@@ -7,7 +8,7 @@ export default class Toolbar extends React.Component {
 
     render() {
         return (
-            <nav>
+            <nav className={styles.toolbar}>
                 <h1>Mnemosyne</h1>
             </nav>
         )
