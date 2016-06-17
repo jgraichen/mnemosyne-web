@@ -1,3 +1,5 @@
+
+import os
 import aiohttp
 import aiohttp.web
 
@@ -5,11 +7,31 @@ from mnemosyne.app import by_time, by_uuid
 
 application = aiohttp.web.Application()
 
+class DirectoryIndex(aiohttp.web.StaticRoute):
+    def handle(self, request):
+        filename = request.match_info['filename']
+
+        if not filename:
+            filename = 'index.html'
+        elif filename.endswith('/'):
+            filename += 'index.html'
+
+        request.match_info['filename'] = filename
+
+        return super().handle(request)
+
+public_dir = os.path.abspath(os.path.join(__file__, '../../../public'))
+
+application.router.register_route(DirectoryIndex(None, '/', public_dir))
+
+
 # by_uuid API
-# app.router.add_route('GET', '/applications', mnemosyne.applications.index)
 application.router.add_route('GET', '/trace/{traceUuid}', by_uuid.getTrace)
-application.router.add_route('GET', '/transaction/{transactionUuid}', by_uuid.getTransaction)
-application.router.add_route('GET', '/application/{applicationUuid}', by_uuid.getApplication)
+application.router.add_route(
+    'GET', '/transaction/{transactionUuid}', by_uuid.getTransaction)
+application.router.add_route(
+    'GET', '/application/{applicationUuid}', by_uuid.getApplication)
 
 # by_time API
-application.router.add_route('GET', '/traces/frontend/age/{ageInMin}', by_time.getFrontendTraces)
+application.router.add_route(
+    'GET', '/traces/frontend/age/{ageInMin}', by_time.getFrontendTraces)
