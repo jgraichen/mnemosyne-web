@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router'
 import styles from './toolbar.sass'
 
 export default class Toolbar extends React.Component {
@@ -9,7 +10,13 @@ export default class Toolbar extends React.Component {
     render() {
         return (
             <nav className={styles.toolbar}>
-                <h1>Mnemosyne</h1>
+                <h1>
+                    <Link to="/">Mnemosyne</Link>
+                </h1>
+                <ul>
+                    <li><Link to="/traces">Traces</Link></li>
+                    <li><Link to="/applications">Applications</Link></li>
+                </ul>
             </nav>
         )
     }
