@@ -36,3 +36,7 @@ bower.json
 
 # Ignore pycache
 __pycache__
+
+# Ignore node
+node_modules
+public/assets

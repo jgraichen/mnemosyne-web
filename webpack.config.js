@@ -4,11 +4,11 @@ const autoprefixer = require('autoprefixer')
 
 module.exports = {
   entry: [
-    '.'
+    './web/index.js'
   ],
   output: {
-    path: path.resolve('./dist'),
-    publicPath: '/dist/',
+    path: path.resolve('./public/assets'),
+    publicPath: '/assets/',
     filename: '[name].js',
   },
   resolve: {
@@ -21,11 +21,10 @@ module.exports = {
     loaders: [
       {
         test: /\.jsx?$/,
-        include: path.resolve('./src'),
+        include: path.resolve('./web'),
         loaders: ['react-hot', 'babel'],
       }, {
         test: /\.sass$/,
-        include: path.resolve('./src'),
         loaders: [
           'style',
           'css?modules&camelCase',
