@@ -56,4 +56,12 @@ Start python server like above and run webpack-dev-server via:
 npm start
 ```
 
+Gunicorn3 can also be placed in a reload mode, reloading python code when changed:
+
+```
+gunicorn3 mnemosyne.app --bind localhost:8080 --worker-class aiohttp.worker.GunicornWebWorker --reload
+```
+
+Use both for automatic code reloading on frontend and backend.
+
 Open `http://localhost:8081/` in your browser and start hacking frontend.
