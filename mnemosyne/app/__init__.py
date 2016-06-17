@@ -3,10 +3,36 @@ import os
 import aiohttp
 import aiohttp.web
 
-from mnemosyne.app import by_time, by_uuid
+from mnemosyne.app import by_time, by_uuid, applications, middleware
 
-application = aiohttp.web.Application()
+application = aiohttp.web.Application(middlewares=[
+    middleware.DatabaseMiddleware
+])
 
+#
+# API
+#
+application.router.add_route('GET', '/api/applications', applications.index)
+
+#
+# by_uuid API
+#
+application.router.add_route('GET', '/trace/{traceUuid}', by_uuid.getTrace)
+application.router.add_route(
+    'GET', '/transaction/{transactionUuid}', by_uuid.getTransaction)
+application.router.add_route(
+    'GET', '/application/{applicationUuid}', by_uuid.getApplication)
+
+#
+# by_time API
+#
+application.router.add_route(
+    'GET', '/traces/frontend/age/{ageInMin}', by_time.getFrontendTraces)
+
+
+#
+# Server static files
+#
 class DirectoryIndex(aiohttp.web.StaticRoute):
     def handle(self, request):
         filename = request.match_info['filename']
@@ -23,15 +49,3 @@ class DirectoryIndex(aiohttp.web.StaticRoute):
 public_dir = os.path.abspath(os.path.join(__file__, '../../../public'))
 
 application.router.register_route(DirectoryIndex(None, '/', public_dir))
-
-
-# by_uuid API
-application.router.add_route('GET', '/trace/{traceUuid}', by_uuid.getTrace)
-application.router.add_route(
-    'GET', '/transaction/{transactionUuid}', by_uuid.getTransaction)
-application.router.add_route(
-    'GET', '/application/{applicationUuid}', by_uuid.getApplication)
-
-# by_time API
-application.router.add_route(
-    'GET', '/traces/frontend/age/{ageInMin}', by_time.getFrontendTraces)
