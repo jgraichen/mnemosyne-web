@@ -1,8 +1,15 @@
 @import '~bourbon/app/assets/stylesheets/bourbon'
 
-@include font-face('Open Sans', 'open-sans-fontface/fonts/Regular/OpenSans-Regular')
+@include font-face('Open Sans', 'open-sans-fontface/fonts/Regular/OpenSans-Regular', $file-formats: woff2 woff)
+@include font-face('Open Sans', 'open-sans-fontface/fonts/Italic/OpenSans-Italic', normal, italic, $file-formats: woff2 woff)
+@include font-face('Open Sans', 'open-sans-fontface/fonts/Bold/OpenSans-Bold', bold, $file-formats: woff2 woff)
+@include font-face('Open Sans', 'open-sans-fontface/fonts/BoldItalic/OpenSans-BoldItalic', bold, italic, $file-formats: woff2 woff)
 
 body, html
   padding: 0
   margin: 0
   font-family: 'Open Sans'
+
+h1, h2, h3, h4, h5, h6
+  font-family: 'Open Sans'
+  font-weight: normal

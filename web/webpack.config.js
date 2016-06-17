@@ -1,9 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
 const autoprefixer = require('autoprefixer')
-const ExtractText = require('extract-text-webpack-plugin')
-
-const extractStyles = new ExtractText('[name].css')
 
 module.exports = {
   entry: [
@@ -29,37 +26,38 @@ module.exports = {
       }, {
         test: /\.sass$/,
         include: path.resolve('./src'),
-        loader: extractStyles.extract([
-          'css?modules&camelCase&sourceMap',
+        loaders: [
+          'style',
+          'css?modules&camelCase',
           'postcss?sourceMap',
           'sass?sourceMap'
-        ]),
+        ],
       }, {
-        test: /\.svg$/,
+        test: /\.svg(\?.*)?$/,
         loader: 'file',
         query: {
           mimetype: 'image/svg+xml'
         }
       }, {
-        test: /\.woff$/,
+        test: /\.woff(\?.*)?$/,
         loader: 'file',
         query: {
           mimetype: 'application/font-woff'
         }
       }, {
-        test: /\.woff2$/,
+        test: /\.woff2(\?.*)?$/,
         loader: 'file',
         query: {
           mimetype: 'application/font-woff2'
         }
       }, {
-        test: /\.[ot]tf$/,
+        test: /\.[ot]tf(\?.*)?$/,
         loader: 'file',
         query: {
           mimetype: 'application/octet-stream'
         }
       }, {
-        test: /\.eot$/,
+        test: /\.eot(\?.*)?$/,
         loader: 'file',
         query: {
           mimetype: 'application/vnd.ms-fontobject'
@@ -74,8 +72,5 @@ module.exports = {
   postcss: function() {
     return [autoprefixer]
   },
-  devtool: 'source-map-inline',
-  plugins: [
-    extractStyles
-  ]
+  devtool: 'source-map-inline'
 }
