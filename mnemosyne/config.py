@@ -35,7 +35,7 @@ class Config(object):
         name = 'web'
 
         def __init__(self, config):
-            self.port = urlparse(config.get(self.name, 'port', fallback=None))
+            self.port = int(config.get(self.name, 'port', fallback=None))
 
 
 config = Config()
