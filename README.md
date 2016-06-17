@@ -45,3 +45,15 @@ Run with gunicorn3:
 ```
 gunicorn mnemosyne.app --bind localhost:8080 --worker-class aiohttp.worker.GunicornWebWorker
 ```
+
+## Development
+
+Wepack provides a development server that will automatically reload JavaScript modules when they are changed. Other requests will be proxied to the python backend server assuming they run on default ports.
+
+Start python server like above and run webpack-dev-server via:
+
+```
+npm start
+```
+
+Open `http://localhost:8081/` in your browser and start hacking frontend.
