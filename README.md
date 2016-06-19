@@ -43,7 +43,7 @@ python3 server.py
 Run with gunicorn3:
 
 ```
-gunicorn mnemosyne.app --bind localhost:8080 --worker-class aiohttp.worker.GunicornWebWorker
+gunicorn3 -k aiohttp.worker.GunicornWebWorker -b localhost:8080 mnemosyne.app
 ```
 
 ## Development
@@ -59,7 +59,7 @@ npm start
 Gunicorn3 can also be placed in a reload mode, reloading python code when changed:
 
 ```
-gunicorn3 mnemosyne.app --bind localhost:8080 --worker-class aiohttp.worker.GunicornWebWorker --reload
+gunicorn3 -k aiohttp.worker.GunicornWebWorker -b localhost:8080 --reload mnemosyne.app
 ```
 
 Use both for automatic code reloading on frontend and backend.
