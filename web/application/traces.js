@@ -1,9 +1,9 @@
 import React from 'react'
 
-import Panel from '../components/panel'
+import { Panel } from '../components/panel'
 import * as API from '../api'
 
-export default class Traces extends React.Component {
+export class Traces extends React.Component {
   state = {traces: []}
 
   constructor(...args) {

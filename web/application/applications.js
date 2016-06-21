@@ -1,8 +1,8 @@
 import React from 'react'
 
-import Panel from '../components/panel'
+import { Panel } from '../components/panel'
 
-export default class Applications extends React.Component {
+export class Applications extends React.Component {
     constructor(...args) {
         super(...args)
     }

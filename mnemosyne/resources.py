@@ -35,7 +35,7 @@ class Trace(object):
 
 
 class Transaction(object):
-    def __init__(self, uuid, name, meta):
+    def __init__(self, uuid, name, meta, start):
         self.uuid = uuid
         self.name = name
         self.meta = meta

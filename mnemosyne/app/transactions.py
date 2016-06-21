@@ -8,9 +8,10 @@ async def index(request):
     async with request.db.acquire() as conn:
         async with conn.cursor() as cur:
             await cur.execute("""
-                SELECT DISTINCT transaction_id, name, meta
+                SELECT DISTINCT transaction_id, name, meta, start
                 FROM traces
                 WHERE origin_id IS NULL
+                ORDER BY start DESC
                 LIMIT 20
             """)
 

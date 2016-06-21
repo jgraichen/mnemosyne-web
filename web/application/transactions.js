@@ -2,7 +2,7 @@ import React from 'react'
 
 import * as API from '../api'
 
-export default class Transactions extends React.Component {
+export class Transactions extends React.Component {
   state = {transactions: []}
 
   constructor(...args) {

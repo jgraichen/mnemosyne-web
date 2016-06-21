@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './panel.sass'
 
-export default class Panel extends React.Component {
+export class Panel extends React.Component {
     constructor(...args) {
         super(...args)
     }
