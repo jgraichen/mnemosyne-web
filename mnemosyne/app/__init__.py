@@ -3,7 +3,8 @@ import os
 import aiohttp
 import aiohttp.web
 
-from mnemosyne.app import by_time, by_uuid, applications, middleware
+from mnemosyne.app import by_time, by_uuid
+from mnemosyne.app import applications, middleware, traces, transactions
 
 application = aiohttp.web.Application(middlewares=[
     middleware.DatabaseMiddleware
@@ -13,6 +14,8 @@ application = aiohttp.web.Application(middlewares=[
 # API
 #
 application.router.add_route('GET', '/api/applications', applications.index)
+application.router.add_route('GET', '/api/transactions', transactions.index)
+application.router.add_route('GET', '/api/traces', traces.index)
 
 #
 # by_uuid API

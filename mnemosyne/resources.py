@@ -20,3 +20,29 @@ class Application(object):
             'id': self.id,
             'name': self.name
         }
+
+
+class Trace(object):
+    def __init__(self, uuid, name):
+        self.uuid = uuid
+        self.name = name
+
+    def __serialize__(self):
+        return {
+            'uuid': self.uuid,
+            'name': self.name
+        }
+
+
+class Transaction(object):
+    def __init__(self, uuid, name, meta):
+        self.uuid = uuid
+        self.name = name
+        self.meta = meta
+
+    def __serialize__(self):
+        return {
+            'uuid': self.uuid,
+            'name': self.name,
+            'meta': self.meta
+        }
