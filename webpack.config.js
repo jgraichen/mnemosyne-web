@@ -1,10 +1,11 @@
 const path = require('path')
 const webpack = require('webpack')
 const autoprefixer = require('autoprefixer')
+const webpackNotifier = require('webpack-notifier');
 
 module.exports = {
   entry: [
-    './web/index.js'
+    path.resolve('./web/index.js')
   ],
   output: {
     path: path.resolve('./public/assets'),
@@ -13,7 +14,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'react': path.resolve('./node_modules/react')
+      'react': path.dirname(require.resolve('react'))
     },
     extensions: ['', '.js', '.jsx']
   },
@@ -65,12 +66,21 @@ module.exports = {
     ]
   },
   babel: {
-    presets: ['react'],
-    plugins: ['transform-es2015-modules-commonjs']
+    presets: [
+      'react', 'stage-2'
+    ],
+    plugins: [
+      'syntax-class-properties',
+      'transform-es2015-modules-commonjs',
+      'transform-class-properties'
+    ]
   },
   postcss: function() {
     return [autoprefixer]
   },
+  plugins: [
+    new webpackNotifier()
+  ],
   devtool: 'source-map-inline',
   devServer: {
     port: 8081,
