@@ -23,26 +23,42 @@ class Application(object):
 
 
 class Trace(object):
-    def __init__(self, uuid, name):
+    def __init__(self, uuid, name, start, stop, meta):
         self.uuid = uuid
         self.name = name
-
-    def __serialize__(self):
-        return {
-            'uuid': self.uuid,
-            'name': self.name
-        }
-
-
-class Transaction(object):
-    def __init__(self, uuid, name, meta, start):
-        self.uuid = uuid
-        self.name = name
+        self.start = start
+        self.stop = stop
         self.meta = meta
 
     def __serialize__(self):
         return {
             'uuid': self.uuid,
             'name': self.name,
-            'meta': self.meta
+            'start': self.start,
+            'stop': self.stop,
+            'meta': self.meta,
+            'duration': self.stop - self.start
         }
+
+
+class Transaction(object):
+    def __init__(self, uuid, start, stop, meta, traces=None):
+        self.uuid = uuid
+        self.start = start
+        self.stop = stop
+        self.meta = meta
+        self.traces = traces
+
+    def __serialize__(self):
+        res = {
+            'uuid': self.uuid,
+            'start': self.start,
+            'stop': self.stop,
+            'meta': self.meta,
+            'duration': self.stop - self.start
+        }
+
+        if not self.traces is None:
+            res['traces'] = self.traces
+
+        return res

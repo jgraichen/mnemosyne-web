@@ -37,3 +37,15 @@ export async function getTransactions() {
 
   return json
 }
+
+export async function getTransaction(id) {
+  let response = await fetch(URL.transactions + '/' + id)
+
+  if (response.status < 200 || response.status > 399) {
+    throw new Error('Invalid response code: ' + response.status)
+  }
+
+  let json = await response.json()
+
+  return json
+}

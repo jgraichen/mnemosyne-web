@@ -6,14 +6,15 @@ import { Main } from './main'
 import { Traces } from './application/traces'
 import { Dashboard } from './application/dashboard'
 import { Applications } from './application/applications'
-import { Transactions } from './application/transactions'
+import * as Transaction from './application/transactions'
 
 window.addEventListener('DOMContentLoaded', () => {
 
   let router = <Router history={hashHistory}>
     <Route path="/" component={Main}>
       <IndexRoute component={Dashboard} />
-      <Route path="transactions" component={Transactions} />
+      <Route path="transactions" component={Transaction.List} />
+      <Route path="transactions/:id" component={Transaction.Show} />
       <Route path="applications" component={Applications} />
     </Route>
   </Router>

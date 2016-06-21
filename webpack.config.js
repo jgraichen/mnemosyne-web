@@ -25,7 +25,7 @@ module.exports = {
         include: path.resolve('./web'),
         loaders: ['react-hot', 'babel'],
       }, {
-        test: /\.sass$/,
+        test: /\.(sass|css)$/,
         loaders: [
           'style',
           'css?modules&camelCase',

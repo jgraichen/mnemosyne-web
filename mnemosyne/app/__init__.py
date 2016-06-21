@@ -15,6 +15,7 @@ application = aiohttp.web.Application(middlewares=[
 #
 application.router.add_route('GET', '/api/applications', applications.index)
 application.router.add_route('GET', '/api/transactions', transactions.index)
+application.router.add_route('GET', '/api/transactions/{uuid}', transactions.show)
 application.router.add_route('GET', '/api/traces', traces.index)
 
 #
