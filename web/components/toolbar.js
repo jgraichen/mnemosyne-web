@@ -14,8 +14,9 @@ export default class Toolbar extends React.Component {
                     <Link to="/">Mnemosyne</Link>
                 </h1>
                 <ul>
-                    <li><Link to="/traces">Traces</Link></li>
                     <li><Link to="/applications">Applications</Link></li>
+                    <li><Link to="/transactions">Transactions</Link></li>
+                    <li><Link to="/traces">Traces</Link></li>
                 </ul>
             </nav>
         )

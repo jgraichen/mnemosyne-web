@@ -1,25 +1,24 @@
 import React from 'react'
 
-import Panel from '../components/panel'
 import * as API from '../api'
 
-export default class Traces extends React.Component {
-  state = {traces: []}
+export default class Transactions extends React.Component {
+  state = {transactions: []}
 
   constructor(...args) {
     super(...args)
   }
 
   componentWillMount() {
-    API.getTraces().then(async json => {
-      this.setState({traces: json})
+    API.getTransactions().then(async json => {
+      this.setState({transactions: json})
     })
   }
 
   render() {
     return <section>
       <ul>
-        {this.state.traces.map(item => this.renderListItem(item))}
+        {this.state.transactions.map(item => this.renderListItem(item))}
       </ul>
     </section>
   }
