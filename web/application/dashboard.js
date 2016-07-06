@@ -39,7 +39,7 @@ export class ErrorRatePanel extends React.Component {
   render() {
     return <Panel raised={true}>
       <div className={styles.appOverview}>
-        <h2>Response Times</h2>
+        <h2>Error rate</h2>
       </div>
     </Panel>
   }
@@ -78,7 +78,7 @@ export class ResponseTimeChart extends React.Component {
     let data = []
 
     for(let t of json) {
-      let point = [t.start / 1000, t.duration / 1000000]
+      let point = [t.start / 1000, t.duration / 1000]
       data.push(point)
     }
 
@@ -95,10 +95,12 @@ export class ResponseTimeChart extends React.Component {
   render() {
     let series = this.state.series
 
+
+
     return <section>
       <ChartContainer timeRange={series.timerange()}>
         <ChartRow height="160">
-          <YAxis id="resptime" min={0} max={200} format=",.0f"/>
+          <YAxis label="ms" id="resptime" min={0} max={1200} format=",.0f"/>
           <Charts>
             <LineChart axis="resptime" series={series} />
           </Charts>

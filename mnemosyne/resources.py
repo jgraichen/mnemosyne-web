@@ -26,8 +26,8 @@ class Trace(object):
     def __init__(self, uuid, name, start, stop, meta):
         self.uuid = uuid
         self.name = name
-        self.start = start
-        self.stop = stop
+        self.start = start / 1000
+        self.stop = stop / 1000
         self.meta = meta
 
     def __serialize__(self):
@@ -44,8 +44,8 @@ class Trace(object):
 class Transaction(object):
     def __init__(self, uuid, start, stop, meta, traces=None):
         self.uuid = uuid
-        self.start = start
-        self.stop = stop
+        self.start = start / 1000
+        self.stop = stop / 1000
         self.meta = meta
         self.traces = traces
 
