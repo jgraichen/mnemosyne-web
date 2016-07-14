@@ -39,6 +39,7 @@
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-router": "^2.4.1",
-    "react-timeseries-charts": "^0.9.0"
+    "react-timeseries-charts": "^0.9.0",
+    "react-bootstrap-table": "^2.3.7"
   }
 }
