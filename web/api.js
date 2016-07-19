@@ -26,6 +26,18 @@ export async function getTraces() {
   return json
 }
 
+export async function getTrace(id) {
+  let response = await fetch(URL.traces + '/' + id)
+
+  if (response.status < 200 || response.status > 399) {
+    throw new Error('Invalid response code: ' + response.status)
+  }
+
+  let json = await response.json()
+
+  return json
+}
+
 export async function getTransactions() {
   let response = await fetch(URL.transactions)
 

@@ -23,12 +23,13 @@ class Application(object):
 
 
 class Trace(object):
-    def __init__(self, uuid, name, start, stop, meta):
+    def __init__(self, uuid, name, start, stop, meta, spans=None):
         self.uuid = uuid
         self.name = name
         self.start = start / 1000
         self.stop = stop / 1000
         self.meta = meta
+        self.spans = spans
 
     def __serialize__(self):
         return {
@@ -37,7 +38,8 @@ class Trace(object):
             'start': self.start,
             'stop': self.stop,
             'meta': self.meta,
-            'duration': self.stop - self.start
+            'duration': self.stop - self.start,
+            'spans': self.spans
         }
 
 
@@ -62,3 +64,21 @@ class Transaction(object):
             res['traces'] = self.traces
 
         return res
+
+class Span(object):
+    def __init__(self, uuid, name, start, stop, meta):
+        self.uuid = uuid
+        self.name = name
+        self.start = start / 1000
+        self.stop = stop / 1000
+        self.meta = meta
+
+    def __serialize__(self):
+        return {
+            'uuid': self.uuid,
+            'name': self.name,
+            'start': self.start,
+            'stop': self.stop,
+            'meta': self.meta,
+            'duration': self.stop - self.start
+        }

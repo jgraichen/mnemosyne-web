@@ -17,6 +17,7 @@ application.router.add_route('GET', '/api/applications', applications.index)
 application.router.add_route('GET', '/api/transactions', transactions.index)
 application.router.add_route('GET', '/api/transactions/{uuid}', transactions.show)
 application.router.add_route('GET', '/api/traces', traces.index)
+application.router.add_route('GET', '/api/traces/{uuid}', traces.show)
 
 #
 # by_uuid API

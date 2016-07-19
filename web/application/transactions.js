@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 import {Table, Column, Cell} from 'fixed-data-table-2';
+
 require('fixed-data-table-2/dist/fixed-data-table.css');
 
 import * as API from '../api';
@@ -21,6 +22,14 @@ const TimeCell = ({rowIndex, data, col, ...props}) => {
   );
 };
 
+const MetaCell = ({rowIndex, data, col, ...props}) => {
+  let stringValue = JSON.stringify(data[rowIndex][col]);
+  return (
+    <Cell {...props}>
+      {stringValue}
+    </Cell>
+  );
+};
 
 export class List extends React.Component {
   state = {transactions: []}
@@ -93,13 +102,65 @@ export class Show extends React.Component {
   }
 
   render() {
-    let t = this.state.transaction
+    let {transaction} = this.state;
 
-    if (!t)
+    if (!transaction)
       return null
 
-    return <section>
-      <h2><span>{t.uuid}</span>: <span>{t.name}</span></h2>
-    </section>
+    function onRowSelect(event, rowId){
+      let uuid = transaction.traces[rowId]["uuid"];
+      // TODO: Do this with router
+      window.location.href= "/#/traces/"+uuid;
+    }
+
+    // TODO: find a better way to scale the table. Also: re-render on window resize
+    let width = window.innerWidth;
+    let height = window.innerHeight-200; // window hight - navbar
+
+    return (
+      <section>
+        <h2>Transaction <span>{transaction.uuid}</span></h2>
+
+        <h3>Traces:</h3>
+        <Table
+        rowHeight={50}
+        rowsCount={transaction.traces.length}
+        width={width}
+        height={height}
+        headerHeight={50}
+        onRowClick={onRowSelect}>
+          <Column
+            header={<Cell>Trace ID</Cell>}
+            cell={<TextCell data={transaction.traces} col="uuid" />}
+            flexGrow={1}
+            width={200}
+          />
+          <Column
+            header={<Cell>Name</Cell>}
+            cell={<TextCell data={transaction.traces} col="name" />}
+            fixed={true}
+            width={200}
+          />
+          <Column
+            header={<Cell>Start</Cell>}
+            cell={<TimeCell data={transaction.traces} col="start" />}
+            fixed={true}
+            width={400}
+          />
+          <Column
+            header={<Cell>Duration (in ms)</Cell>}
+            cell={<TextCell data={transaction.traces} col="duration" />}
+            fixed={true}
+            width={200}
+          />
+          <Column
+            header={<Cell>Meta</Cell>}
+            cell={<MetaCell data={transaction.traces} col="meta" />}
+            flexGrow={2}
+            width={200}
+          />
+        </Table>
+      </section>
+    );
   }
 }
