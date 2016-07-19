@@ -1,8 +1,26 @@
 import React from 'react'
 import { Link } from 'react-router'
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import {Table, Column, Cell} from 'fixed-data-table-2';
+require('fixed-data-table-2/dist/fixed-data-table.css');
 
-import * as API from '../api'
+import * as API from '../api';
+
+
+const TextCell = ({rowIndex, data, col, ...props}) => (
+  <Cell {...props}>
+    {data[rowIndex][col]}
+  </Cell>
+);
+
+const TimeCell = ({rowIndex, data, col, ...props}) => {
+  var date = new Date( data[rowIndex][col]/1000); // start is in microseconds
+  return (
+    <Cell {...props}>
+      {date.toUTCString()}
+    </Cell>
+  );
+};
+
 
 export class List extends React.Component {
   state = {transactions: []}
@@ -18,29 +36,46 @@ export class List extends React.Component {
   }
 
   render() {
+    let {transactions} = this.state;
 
-    function onRowSelect(row, isSelected){
+    function onRowSelect(event, rowId){
+      let uuid = transactions[rowId]["uuid"];
       // TODO: Do this with router
-      window.location.href= "/#/transactions/"+row.uuid;
+      window.location.href= "/#/transactions/"+uuid;
     }
 
-    var selectRowProp = {
-      mode: "radio",
-      clickToSelect: true,
-      hideSelectColumn: true,
-      onSelect: onRowSelect
-    };
 
-    function dateFormatter(value, row, formatExtraData){
-      var date = new Date(value/1000); // start is in microseconds
-      return date.toUTCString();
-    }
 
-    return <BootstrapTable data={this.state.transactions} striped={true} hover={true} pagination={true} search={true} selectRow={selectRowProp}>
-        <TableHeaderColumn dataField="uuid" isKey={true} dataAlign="left" dataSort={true}>Transaction ID</TableHeaderColumn>
-        <TableHeaderColumn dataField="start" dataAlign="left" dataSort={true} dataFormat={dateFormatter}>Start</TableHeaderColumn>
-        <TableHeaderColumn dataField="duration" dataAlign="left" dataSort={true}>Duration</TableHeaderColumn>
-    </BootstrapTable>
+    // TODO: find a better way to scale the table. Also: re-render on window resize
+    let width = window.innerWidth;
+    let height = window.innerHeight-60; // window hight - navbar
+
+    return <Table
+      rowHeight={50}
+      rowsCount={transactions.length}
+      width={width}
+      height={height}
+      headerHeight={50}
+      onRowClick={onRowSelect}>
+      <Column
+        header={<Cell>Transaction ID</Cell>}
+        cell={<TextCell data={transactions} col="uuid" />}
+        flexGrow={1}
+        width={200}
+      />
+      <Column
+        header={<Cell>Start</Cell>}
+        cell={<TimeCell data={transactions} col="start" />}
+        fixed={true}
+        width={400}
+      />
+      <Column
+        header={<Cell>Duration (in ms)</Cell>}
+        cell={<TextCell data={transactions} col="duration" />}
+        fixed={true}
+        width={200}
+      />
+    </Table>
   }
 }
 

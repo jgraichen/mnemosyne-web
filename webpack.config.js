@@ -4,6 +4,7 @@ const autoprefixer = require('autoprefixer')
 const webpackNotifier = require('webpack-notifier');
 
 module.exports = {
+  // entry: ['babel-regenerator-runtime', path.resolve('./web/index.js')],
   entry: [
     path.resolve('./web/index.js')
   ],
@@ -23,9 +24,12 @@ module.exports = {
       {
         test: /\.jsx?$/,
         include: path.resolve('./web'),
-        loaders: ['react-hot', 'babel'],
+        loaders: ['react-hot', 'babel?presets[]=es2015&presets[]=stage-0&presets[]=react'],
       }, {
-        test: /\.(sass|css)$/,
+        test: /\.css$/,
+        loader: "style-loader!css-loader"
+      }, {
+        test: /\.sass$/,
         loaders: [
           'style',
           'css?modules&camelCase',
