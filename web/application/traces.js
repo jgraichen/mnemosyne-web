@@ -21,7 +21,7 @@ export class Show extends React.Component {
 
     let {trace} = this.state;
 
-    if (!trace)
+    if (!trace || trace.spans.length == 0)
       return null
 
     let options = {
